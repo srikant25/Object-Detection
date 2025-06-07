@@ -1,4 +1,4 @@
-# README.md
+
 
 ## RCNN Object Detection from Scratch on Penn-Fudan Dataset
 
