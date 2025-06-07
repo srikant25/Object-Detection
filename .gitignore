@@ -13,6 +13,7 @@ develop-eggs/
 dist/
 downloads/
 R-CNN/data/
+PennFudanPed/
 eggs/
 .eggs/
 lib/
@@ -68,6 +69,11 @@ instance/
 
 # Scrapy stuff:
 .scrapy
+*.npy
+*.h5
+*.pt
+*.zip
+__pycache__/
 
 # Sphinx documentation
 docs/_build/
