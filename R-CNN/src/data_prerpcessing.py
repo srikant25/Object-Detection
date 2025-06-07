@@ -20,9 +20,7 @@ ss=cv2.ximgproc.segmentation.createSelectiveSearchSegmentation()
 
 
 # Sample Image to visualize the 200 region proposal to show case in the image
-
-
-
+'''
 im = cv2.imread(os.path.join(image_folder,"FudanPed00007.png"))
 ss.setBaseImage(im)
 ss.switchToSelectiveSearchFast()
@@ -36,7 +34,7 @@ for i, rect in (enumerate(rects)):
 plt.imshow(imOut)
 plt.axis('off')
 plt.show()
-
+'''
 
 #++++++++++++++++++++++++++++ Data Preprocess Start Here +++++++++++++++++++++++++++++++++
 
@@ -105,35 +103,37 @@ def process_image(filename):
         print(f"Error in {filename}: {e}")
     return  local_train_image,local_train_label,local_proposal_bbox,local_gt_bbox,local_target_bbox
 
-'''
-train_image = []
-train_label = []
-proposal_bbox = []
-gt_bbox = []
-target_bbox = []
-for filename in tqdm(os.listdir(image_folder)):
-    local_train_image,local_train_label,local_proposal_bbox,local_gt_bbox,local_target_bbox= process_image(filename)
-    train_image.extend(local_train_image)
-    train_label.extend(local_train_label)
-    proposal_bbox.extend(local_proposal_bbox)
-    gt_bbox.extend(local_gt_bbox)
-    target_bbox.extend(local_target_bbox)
+def data_process():
+    train_image = []
+    train_label = []
+    proposal_bbox = []
+    gt_bbox = []
+    target_bbox = []
+    for filename in tqdm(os.listdir(image_folder)):
+        local_train_image,local_train_label,local_proposal_bbox,local_gt_bbox,local_target_bbox= process_image(filename)
+        train_image.extend(local_train_image)
+        train_label.extend(local_train_label)
+        proposal_bbox.extend(local_proposal_bbox)
+        gt_bbox.extend(local_gt_bbox)
+        target_bbox.extend(local_target_bbox)
 
-train_image= np.array(train_image)
-train_label= np.array(train_label)
-proposal_box=np.array(proposal_bbox)
-target_box=np.array(target_bbox)
-gt_box=np.array(gt_bbox)
+    train_image= np.array(train_image)
+    train_label= np.array(train_label)
+    proposal_box=np.array(proposal_bbox)
+    target_box=np.array(target_bbox)
+    gt_box=np.array(gt_bbox)
 
-out_dir = os.path.join(ROOT_DIR,'R-CNN/data')
+    out_dir = os.path.join(ROOT_DIR,'R-CNN/data')
 
-np.save(os.path.join(out_dir,'train_image.npy'),train_image)
-np.save(os.path.join(out_dir,'train_label.npy'),train_label)
-np.save(os.path.join(out_dir,'proposal_box.npy'),proposal_box)
-np.save(os.path.join(out_dir,'target_box.npy'),target_box)
-np.save(os.path.join(out_dir,'gt_box.npy'),gt_box)
+    np.save(os.path.join(out_dir,'train_image.npy'),train_image)
+    np.save(os.path.join(out_dir,'train_label.npy'),train_label)
+    np.save(os.path.join(out_dir,'proposal_box.npy'),proposal_box)
+    np.save(os.path.join(out_dir,'target_box.npy'),target_box)
+    np.save(os.path.join(out_dir,'gt_box.npy'),gt_box)
 
-print(len(train_image))
-print(np.unique(train_label,return_counts=True))
+    print(len(train_image))
+    print(np.unique(train_label,return_counts=True))
 
-'''
+if __name__=="__main__":
+    data_process()
+

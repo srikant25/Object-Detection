@@ -7,9 +7,7 @@ def visualize(image, pred_boxes=None, true_boxes=None, label='object', scores=No
     # Draw ground truth boxes (can be one or many)
     if true_boxes is not None:
         if isinstance(true_boxes[0], list) or isinstance(true_boxes[0], tuple):
-            print(true_boxes)
             for box in true_boxes:
-                print(box)
                 x1, y1, x2, y2 = map(int, box)
                 cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 2)  # blue for GT
         else:

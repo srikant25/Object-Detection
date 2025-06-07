@@ -2,23 +2,23 @@
 
 ## RCNN Object Detection from Scratch on Penn-Fudan Dataset
 
-This project demonstrates an RCNN (Region-based Convolutional Neural Network) object detection implementation **from scratch** using the **Penn-Fudan Pedestrian Detection dataset**. The pipeline includes data preprocessing, region proposal generation, feature extraction with VGG16, training SVM classifiers and regressors, applying Non-Maximum Suppression (NMS), and inference with visualization.
+This project demonstrates an RCNN (Region-based Convolutional Neural Network) object detection implementation **from scratch** using the **Penn-Fudan Pedestrian Detection dataset**. The pipeline includes data preprocessing, region proposal generation,g feature extraction with VGG16, training SVM classifiers and regressors, applying Non-Maximum Suppression (NMS), and inference with visualization.
 
 ---
 
 ## 📁 Project Structure
 ```
 Object-Detection/
-├── data/                        # Contains .npy extracted arrays from Penn-Fudan dataset
+├── data/                        # Contains .npy extracted arrays from Penn-Fudan dataset 
 ├── src/
-│   ├── data_preprocessing.py   # Data loading, region proposal using Selective Search
-│   ├── train.py   # VGG16 training and fc2 feature extraction
+│   ├── data_preprocessing.py   # Data loading, region proposal using Selective Search and save .npy 
+│   ├── train.py   # VGG16 training and fc2 feature and save the fc2_model.h5 and fc2_feature.npy
 │   ├── train_svm.py            # Trains SVM classifier and SVR regressor
 │   ├── inference.py            # Inference pipeline with NMS and visualization
 │   └── utils.py                # Utility functions (IOU, NMS ,mAp)
-├── vgg16_model.h5              # Pretrained VGG16 fine-tuned on our dataset
-├── fc2_features.npy            # Extracted fc2 features
-├── train_labels.npy              # Object/background labels
+├── vgg16_model.h5              # Pretrained VGG16 fine-tuned on our dataset (run model.py)
+├── fc2_features.npy            # Extracted fc2 features (run train.py)
+├── train_labels.npy              # Object/background labels 
 ├── train_target_box.npy          # Ground-truth bounding boxes
 └── README.md
 ```
@@ -27,7 +27,7 @@ Object-Detection/
 
 ## 📚 Dataset: Penn-Fudan Pedestrian
 - Download: [Penn-Fudan Database for Pedestrian Detection and Segmentation](https://www.cis.upenn.edu/~jshi/ped_html/)
-- Place the unzipped dataset in a directory and preprocess it to generate `.npy` files for images, labels, region proposals, and bounding boxes.
+- Place the unzipped dataset in a directory and preprocess it to generate `.npy` files for images, labels, region proposals, and bounding boxes. ( run data_process.py )
 
 ---
 
@@ -43,6 +43,7 @@ Object-Detection/
 - Freezes all layers except the final Dense layer.
 - Trains with binary cross-entropy for object/background.
 - Extracts features from the **fc2 layer** for each image region.
+- run train.py to get fc2 layer feature of shape (N, 4096)
 
 ### 3. 🏷️ Training SVM & Regressor (`src/train_svm.py`)
 - Trains an **SVM classifier** on fc2 features to classify object vs background.
@@ -53,14 +54,14 @@ Object-Detection/
 - For a test image, runs region proposals through VGG16 → fc2 features.
 - Predicts class and bounding box.
 - Applies **Non-Maximum Suppression (NMS)** to select optimal boxes.
-- Visualizes predictions vs ground truth.
+- Visualizes predictions vs ground truth. run visualize.py 
 
 ### 5. 📦 Run full pipeline  (`src/main.py`)
 - call all the necessary function from different python file
 - take a one sample image 
 - run all the function and call the visualize function
 
-- Visualizes predictions vs ground truth.
+
 
 ---
 
