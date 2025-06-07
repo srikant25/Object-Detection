@@ -5,7 +5,7 @@ import cv2
 import json
 import warnings
 from pathlib import Path
-from utils import get_iou,get_target_bbox
+from src.utils import get_iou,get_target_bbox
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 warnings.filterwarnings("ignore")
@@ -17,8 +17,12 @@ annot_folder = os.path.join(ROOT_DIR,'PennFudanPed/boundary_box')
 cv2.setUseOptimized(True)
 ss=cv2.ximgproc.segmentation.createSelectiveSearchSegmentation() 
 
+
+
 # Sample Image to visualize the 200 region proposal to show case in the image
-'''
+
+
+
 im = cv2.imread(os.path.join(image_folder,"FudanPed00007.png"))
 ss.setBaseImage(im)
 ss.switchToSelectiveSearchFast()
@@ -32,8 +36,10 @@ for i, rect in (enumerate(rects)):
 plt.imshow(imOut)
 plt.axis('off')
 plt.show()
-'''
+
+
 #++++++++++++++++++++++++++++ Data Preprocess Start Here +++++++++++++++++++++++++++++++++
+
 def process_image(filename):
     local_train_image =[]
     local_train_label = []
@@ -55,7 +61,7 @@ def process_image(filename):
         imOut = im.copy()
         tp_count,fp_count,tp_flag,fp_flag,flag=0,0,0,0,0
         for i, rect in (enumerate(rects)):
-            if i >1500 or flag ==1:
+            if i >2000 or flag ==1:
                 break
             x, y, w, h = rect
             for annot in ground_truth_bbox:
@@ -80,7 +86,7 @@ def process_image(filename):
                     target = get_target_bbox(annot, [x, y, x + w, y + h])
                     local_target_bbox.append(target)
                     tp_count += 1
-                    if tp_count > 15:
+                    if tp_count > 35:
                         tp_flag = 1
             
                 if iou < 0.3 and fp_flag == 0:
@@ -99,7 +105,7 @@ def process_image(filename):
         print(f"Error in {filename}: {e}")
     return  local_train_image,local_train_label,local_proposal_bbox,local_gt_bbox,local_target_bbox
 
-
+'''
 train_image = []
 train_label = []
 proposal_bbox = []
@@ -118,7 +124,9 @@ train_label= np.array(train_label)
 proposal_box=np.array(proposal_bbox)
 target_box=np.array(target_bbox)
 gt_box=np.array(gt_bbox)
+
 out_dir = os.path.join(ROOT_DIR,'R-CNN/data')
+
 np.save(os.path.join(out_dir,'train_image.npy'),train_image)
 np.save(os.path.join(out_dir,'train_label.npy'),train_label)
 np.save(os.path.join(out_dir,'proposal_box.npy'),proposal_box)
@@ -128,14 +136,4 @@ np.save(os.path.join(out_dir,'gt_box.npy'),gt_box)
 print(len(train_image))
 print(np.unique(train_label,return_counts=True))
 
-        
-
-
-
-
-
-
-
-
-
-
+'''

@@ -29,6 +29,19 @@ def get_target_bbox(gt,prop):
     bbox = [tx, ty, tw, th]
     return bbox
 
+def apply_deltas(prop, deltas):
+    x1, y1, x2, y2 = prop
+    prop_w = x2 - x1
+    prop_h = y2 - y1
+
+    tx, ty, tw, th = deltas
+    pred_x1 = x1 + tx * prop_w
+    pred_y1 = y1 + ty * prop_h
+    pred_x2 = pred_x1 + np.exp(tw) * prop_w
+    pred_y2 = pred_y1 + np.exp(th) * prop_h
+
+    return [int(pred_x1), int(pred_y1), int(pred_x2), int(pred_y2)]
+
 
 def NMS(boxes, scores, overlap_thresh=0.3):
     if len(boxes) == 0:

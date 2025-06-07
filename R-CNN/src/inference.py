@@ -3,7 +3,8 @@
 import cv2
 import numpy as np
 from tensorflow.keras.applications.vgg16 import preprocess_input
-from utils import NMS
+from src.utils import NMS,apply_deltas
+
 
 def inference(image, clf, reg, fc2_model):
     img_resized = cv2.resize(image, (224, 224))
@@ -37,7 +38,9 @@ def inference_with_nms(image, region_proposals, clf, reg, fc2_model, iou_thresh=
         if is_object:
             score = clf.predict_proba(feature)[0][1]
             bbox = reg.predict(feature)[0]
-            pred_box = [x1 + int(bbox[0]), y1 + int(bbox[1]), x1 + int(bbox[2]), y1 + int(bbox[3])]
+            #pred_box = [x1 + int(bbox[0]), y1 + int(bbox[1]), x1 + int(bbox[2]), y1 + int(bbox[3])]
+            pred_box = apply_deltas(region,bbox)
+            
             pred_boxes.append(pred_box)
             scores.append(score)
 
@@ -45,6 +48,7 @@ def inference_with_nms(image, region_proposals, clf, reg, fc2_model, iou_thresh=
         idxs = NMS(np.array(pred_boxes), np.array(scores), overlap_thresh=iou_thresh)
         final_boxes = [pred_boxes[i] for i in idxs]
         final_scores = [scores[i] for i in idxs]
+        print('prediction_box:',final_boxes)
         return final_boxes, final_scores
     return [], []
 
