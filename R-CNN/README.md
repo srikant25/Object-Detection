@@ -6,7 +6,7 @@ This project demonstrates an RCNN (Region-based Convolutional Neural Network) ob
 
 ---
 
-## 📁 Project Structure
+###  Project Structure
 ```
 Object-Detection/
 ├── data/                        # Contains .npy extracted arrays from Penn-Fudan dataset 
@@ -25,38 +25,38 @@ Object-Detection/
 
 ---
 
-## 📚 Dataset: Penn-Fudan Pedestrian
+###  Dataset: Penn-Fudan Pedestrian
 - Download: [Penn-Fudan Database for Pedestrian Detection and Segmentation](https://www.cis.upenn.edu/~jshi/ped_html/)
 - Place the unzipped dataset in a directory and preprocess it to generate `.npy` files for images, labels, region proposals, and bounding boxes. ( run data_process.py )
 
 ---
 
-## 🔁 Pipeline Steps
+### Pipeline Steps
 
-### 1. 🧼 Data Preprocessing (`src/data_preprocessing.py`)
+### 1. Data Preprocessing (`src/data_preprocessing.py`)
 - Reads image and annotation files.
 - Applies **Selective Search** using OpenCV to generate region proposals.
 - Saves `train_image.npy`, `train_label.npy`, `target_box.npy`, etc.
 
-### 2. 🧠 Feature Extraction (`src/model.py`)
+### 2. Feature Extraction (`src/model.py`)
 - Uses **VGG16 pretrained on ImageNet**.
 - Freezes all layers except the final Dense layer.
 - Trains with binary cross-entropy for object/background.
 - Extracts features from the **fc2 layer** for each image region.
 - run train.py to get fc2 layer feature of shape (N, 4096)
 
-### 3. 🏷️ Training SVM & Regressor (`src/train_svm.py`)
+### 3.  Training SVM & Regressor (`src/train_svm.py`)
 - Trains an **SVM classifier** on fc2 features to classify object vs background.
 - Trains a **bounding box regressor** (SVR) to predict [x1, y1, x2, y2].
 
-### 4. 📦 Inference + NMS (`src/inference.py`)
+### 4.  Inference + NMS (`src/inference.py`)
 - Loads the trained SVM and SVR.
 - For a test image, runs region proposals through VGG16 → fc2 features.
 - Predicts class and bounding box.
 - Applies **Non-Maximum Suppression (NMS)** to select optimal boxes.
 - Visualizes predictions vs ground truth. run visualize.py 
 
-### 5. 📦 Run full pipeline  (`src/main.py`)
+### 5.  Run full pipeline  (`src/main.py`)
 - call all the necessary function from different python file
 - take a one sample image 
 - run all the function and call the visualize function
@@ -65,7 +65,7 @@ Object-Detection/
 
 ---
 
-## 🧪 Model Evaluation
+###  Model Evaluation
 - **Metric**: Mean Average Precision (mAP)
 - **Techniques**:
   - Non-Maximum Suppression (NMS) to reduce duplicate detections
@@ -73,7 +73,7 @@ Object-Detection/
 
 ---
 
-## 📷 Sample Result
+### Sample Result
 
 ![Prediction Result]![alt text](image-1.png)
 - **Blue box**: Ground Truth
@@ -81,7 +81,7 @@ Object-Detection/
 
 ---
 
-## 🚀 How to Run
+### How to Run
 ```bash
 # Step 1: Extract data
 python src/data_preprocessing.py
@@ -102,7 +102,7 @@ python main.py
 
 ---
 
-## 💡 Future Improvements
+### Future Improvements
 - Use Faster R-CNN architecture
 - Integrate real-time inference
 - Hyperparameter tuning for SVM and SVR
@@ -110,7 +110,7 @@ python main.py
 
 ---
 
-## 📌 Requirements
+### Requirements
 ```bash
 python >= 3.8
 tensorflow >= 2.11
@@ -122,7 +122,7 @@ numpy
 
 ---
 
-## ✍️ Author
+### Author
 **Srikant Nayak**  
 Email: srikantnayak.2010@gmail.com  
 GitHub: [srikant25](https://github.com/srikant25)
