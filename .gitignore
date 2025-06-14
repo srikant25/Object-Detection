@@ -147,6 +147,17 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Ignore resized images
+Fast-RCNN/resized_images/
+
+# Ignore saved models
+Fast-RCNN/src/saved_models/
+saved_models/
+
+# Ignore region proposals
+Fast-RCNN/data/region_proposals.pkl
+
+
 # mypy
 .mypy_cache/
 .dmypy.json
