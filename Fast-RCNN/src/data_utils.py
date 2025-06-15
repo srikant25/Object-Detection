@@ -108,9 +108,13 @@ def data_process():
     with open(os.path.join(output_dir, 'region_proposals.pkl'), 'wb') as f:
         pickle.dump(all_proposals, f)
 
-    print(f"✅ Total region proposals: {len(all_proposals)}")
-    print(f"📦 Saved region proposals to: {os.path.join(output_dir, 'region_proposals.pkl')}")
-    print(f"🖼️ Resized images saved to: {resized_image_folder}")
+    print(f"Total region proposals: {len(all_proposals)}")
+    print(f"Saved region proposals to: {os.path.join(output_dir, 'region_proposals.pkl')}")
+    print(f"Resized images saved to: {resized_image_folder}")
 
-if __name__ == "__main__":
-    data_process()
+# if __name__ == "__main__":
+#     data_process()
+for image in os.listdir(image_folder):
+    im = np.array(cv2.imread(os.path.join(image_folder,image)))
+    print(im.shape[:-1])
+

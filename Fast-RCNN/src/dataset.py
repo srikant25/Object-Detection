@@ -1,37 +1,38 @@
-import cv2
+import torch
+from torch.utils.data import Dataset, DataLoader
 import os
-from torch.utils.data import Dataset
+import pickle
+import cv2
+import numpy as np
 import torchvision.transforms as T
 
-
 class FastRCNNDataset(Dataset):
-    def __init__(self, proposals, image_folder, transform=None):
-        self.proposals = proposals
+    def __init__(self, proposals_path, image_folder, transform=None):
+        with open(proposals_path, 'rb') as f:
+            self.region_proposals = pickle.load(f)
         self.image_folder = image_folder
-        self.transform = transform if transform else T.ToTensor()
-
-        # Collect unique image filenames from proposals
-        self.image_filenames = list(set([p['file_name'] for p in self.proposals]))
+        self.transform = transform
 
     def __len__(self):
-        return len(self.image_filenames)
+        return len(self.region_proposals)
 
     def __getitem__(self, idx):
-        img_name = self.image_filenames[idx]
-        img_path = os.path.join(self.image_folder, img_name)
+        proposal = self.region_proposals[idx]
+        file_name = proposal['file_name']
+        image_path = os.path.join(self.image_folder, file_name)
 
-        # Load and convert image
-        image = cv2.imread(img_path)
+        # Load and preprocess image
+        image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Apply transformation (e.g., ToTensor, Normalize, etc.)
-        image_tensor = self.transform(image)
+        if self.transform:
+            image = self.transform(image)
 
-        # Get region proposals for this image
-        filtered_proposals = [p for p in self.proposals if p['file_name'] == img_name]
+        # Extract region proposal from image
+        x1, y1, x2, y2 = proposal['region_proposal_box']
+        roi = torch.tensor([x1, y1, x2, y2], dtype=torch.float32)
 
-        return image_tensor, filtered_proposals
+        label = torch.tensor(proposal['label'], dtype=torch.long)
+        target_box = torch.tensor(proposal['target_box'], dtype=torch.float32)
 
-
-
-        
+        return image, roi, target_box, label
