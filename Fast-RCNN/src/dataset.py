@@ -1,4 +1,3 @@
-import torch
 from torch.utils.data import Dataset, DataLoader
 import os
 import pickle
@@ -6,14 +5,6 @@ import cv2
 import numpy as np
 import torchvision.transforms as T
 
-
-import torch
-from torch.utils.data import Dataset, DataLoader
-import os
-import pickle
-import cv2
-import numpy as np
-import torchvision.transforms as T
 
 class FastRCNNDataset(Dataset):
     def __init__(self, proposals_path, image_folder, transform=None):
@@ -42,9 +33,3 @@ class FastRCNNDataset(Dataset):
 
         return image, proposals
 
-import tensorflow as tf
-import torch
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(device)
-import sys
-print(sys.executable)

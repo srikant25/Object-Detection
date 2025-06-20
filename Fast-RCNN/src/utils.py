@@ -69,14 +69,6 @@ def roi_pooling(feature_map, roi, output_size=(7, 7), spatial_scale=14/512):
 
     return pooled
 
-# def get_target_bbox2(gt,prop):
-#     x1,y1,x2,y2=prop[0],prop[1],prop[2],prop[3]
-#     tx = (gt[0] - x1) / (x2 - x1)
-#     ty = (gt[1] - y1) / (y2 - y1)
-#     tw = np.log((gt[2] - gt[0]) / (x2 - x1))
-#     th = np.log((gt[3] - gt[1]) / (y2 - y1))
-#     bbox = [tx, ty, tw, th]
-#     return bbox
 
 def get_target_bbox(gt, prop):
     px, py, pw, ph = prop_to_cxcywh(prop)
@@ -121,16 +113,7 @@ def apply_deltas(prop, deltas):
 
     return [int(pred_x1), int(pred_y1), int(pred_x2), int(pred_y2)]
 
-# def apply_deltas(prop, deltas):
-#     x1, y1, x2, y2 = prop
-#     prop_w = x2 - x1
-#     prop_h = y2 - y1
-#     tx, ty, tw, th = deltas
-#     pred_x1 = x1 + tx * prop_w
-#     pred_y1 = y1 + ty * prop_h
-#     pred_x2 = pred_x1 + np.exp(tw) * prop_w
-#     pred_y2 = pred_y1 + np.exp(th) * prop_h
-#     return [int(pred_x1), int(pred_y1), int(pred_x2), int(pred_y2)]
+
 
 
 

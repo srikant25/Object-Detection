@@ -9,3 +9,10 @@ os
 random
 pickle
 xml
+torch
+torchvision
+opencv-python
+matplotlib
+pickle
+numpy
+Pillow
